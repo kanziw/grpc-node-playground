@@ -1,4 +1,25 @@
 {
   "name": "grpc-node-playground",
-  "packageManager": "yarn@4.4.0"
+  "type": "module",
+  "packageManager": "yarn@4.4.0",
+  "workspaces": [
+    "ts-proto"
+  ],
+  "scripts": {
+    "format": "yarn biome check . --write"
+  },
+  "dependencies": {
+    "@grpc/grpc-js": "^1.11.1",
+    "@grpc/proto-loader": "^0.7.13",
+    "await-to-js": "^3.0.0",
+    "long": "^5.2.3",
+    "mali": "https://github.com/malijs/mali",
+    "protobufjs": "^7.3.2"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.8.3",
+    "@types/node": "^22.2.0",
+    "tsx": "^4.17.0",
+    "typescript": "^5.5.4"
+  }
 }

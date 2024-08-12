@@ -1,0 +1,26 @@
+{
+  "include": ["ts-proto"],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["./*"]
+    },
+    "lib": ["ESNext"],
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "resolveJsonModule": true,
+    "target": "ES2023",
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "tsc-alias": {
+    "replacers": {
+      "base-url": {
+        "enabled": false
+      }
+    }
+  }
+}

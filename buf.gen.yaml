@@ -1,0 +1,34 @@
+version: v2
+clean: true
+managed:
+  enabled: true
+plugins:
+  # https://buf.build/community/stephenh-ts-proto
+  - remote: buf.build/community/stephenh-ts-proto:v1.178.0
+    out: ts-proto/__proto__
+    opt:
+      - context=true
+      - forceLong=bigint
+      - esModuleInterop=true
+      - env=node
+      - useOptionals=messages
+      - outputEncodeMethods=true
+      - outputJsonMethods=true
+      - outputPartialMethods=true
+      - stringEnums=true
+      - outputClientImpl=true
+      - addGrpcMetadata=true
+      - useDate=true
+      - outputServices=grpc-js
+      - unrecognizedEnum=true
+      - unrecognizedEnumValue=0
+      - removeEnumPrefix=true
+      - lowerCaseServiceMethods=false
+      - snakeToCamel=false
+      - useExactTypes=true
+      - oneof=unions
+      - useAbortSignal=true
+      - useAsyncIterable=true
+      - useNullAsOptional=true
+      - importSuffix=.js
+      - enumsAsLiterals=true

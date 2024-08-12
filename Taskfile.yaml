@@ -1,6 +1,9 @@
 # https://taskfile.dev
 version: "3"
 
+includes:
+  ts-proto: ./ts-proto/Taskfile.yaml
+
 tasks:
   default:
     cmds:
@@ -45,6 +48,22 @@ tasks:
     desc: Formats the code
     cmds:
       - task: format:proto
+      - task: format:ts
+
+  generate:
+    desc: Generates the code
+    cmds:
+      - task: generate:proto
+
+  run:
+    desc: Runs the application
+    cmds:
+      - task: ts-proto:run
+
+  test:e2e:
+    desc: Runs the e2e tests
+    cmds:
+      - task: ts-proto:test:e2e
 
   lint:
     desc: Lints the code
@@ -57,6 +76,14 @@ tasks:
       - buf format -w
     sources:
       - buf.yaml
+
+  format:ts:
+    desc: Formats the TypeScript files
+    cmds:
+      - yarn format
+    sources:
+      - tsconfig.json
+      - ts-proto/**/*.ts
 
   lint:proto:
     desc: Lints the proto files
@@ -72,4 +99,13 @@ tasks:
       - buf dep update
     sources:
       - proto/**/*.proto
+      - buf.yaml
+
+  generate:proto:
+    desc: Generates the proto files
+    cmds:
+      - buf generate
+    sources:
+      - proto/**/*.proto
+      - buf.gen.yaml
       - buf.yaml

@@ -1,0 +1,20 @@
+# https://taskfile.dev
+version: "3"
+
+env:
+  TS_PROTO_GRPC_SERVER_PORT: 8085
+
+tasks:
+  run:
+    dir: ts-proto
+    desc: Run the ts-proto application
+    cmds:
+      - yarn tsx ./main.ts
+
+  test:e2e:
+    desc: Run the ts-proto e2e tests
+    cmds:
+      - |
+        grpcurl -proto proto/echo/v1/echo.proto -plaintext -d @ localhost:$TS_PROTO_GRPC_SERVER_PORT echo.v1.EchoService/Echo <<EOM
+        { "message": "Hi, ts-proto!" }
+        EOM
