@@ -1,3 +1,6 @@
+.task/
+Brewfile.lock.json
+
 .yarn/*
 !.yarn/patches
 !.yarn/plugins

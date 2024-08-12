@@ -1,5 +1,7 @@
 {
   "recommendations": [
-    "arcanis.vscode-zipfs"
+    "arcanis.vscode-zipfs",
+    "pbkit.vscode-pbkit",
+    "task.vscode-task"
   ]
 }

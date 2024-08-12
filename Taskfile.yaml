@@ -1,0 +1,42 @@
+# https://taskfile.dev
+version: "3"
+
+tasks:
+  default:
+    cmds:
+      - task: install:prereqs
+      - task: install:tools
+      - task: install:deps
+
+  install:prereqs:
+    desc: Installs prerequisites
+    cmds:
+      - brew bundle
+      - if [ ! -d ~/.config/pb/vendor ]; then pb vendor install; fi
+    sources:
+      - Brewfile
+    preconditions:
+      - sh: command -v brew
+        msg: "Please install Homebrew: https://brew.sh/"
+
+  install:tools:
+    desc: Installs tools
+    run: once
+    cmds:
+      - cmd: asdf plugin-add nodejs
+      - cmd: asdf plugin-add buf
+      - asdf install
+      - asdf current
+      # if yarn does not working
+      # - asdf reshim
+      - corepack enable
+    sources:
+      - .tool-versions
+
+  install:deps:
+    desc: Installs dependencies
+    run: once
+    cmds:
+      - yarn install
+    sources:
+      - yarn.lock

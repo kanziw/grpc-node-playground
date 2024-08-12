@@ -1,15 +1,8 @@
 # grpc-node-playground
 
-Use [asdf](https://asdf-vm.com/) to manage the versions of Node.js and Buf.
+Use [Brew](https://brew.sh/) and [Task] to maintain the development environment.
 
 ```shell
-$ asdf plugin add nodejs
-$ asdf plugin add buf
-$ asdf install
-
-# if yarn does not working
-$ asdf reshim
-
-$ corepack enable
-$ yarn
+$ brew bundle
+$ task
 ```
