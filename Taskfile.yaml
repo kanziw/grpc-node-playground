@@ -1,8 +1,9 @@
 # https://taskfile.dev
 version: "3"
 
-includes:
-  ts-proto: ./ts-proto/Taskfile.yaml
+env:
+  CONNECT_ES_GRPC_SERVER_PORT: 8085
+  TS_PROTO_GRPC_SERVER_PORT: 8086
 
 tasks:
   default:
@@ -58,12 +59,19 @@ tasks:
   run:
     desc: Runs the application
     cmds:
-      - task: ts-proto:run
+      - yarn dev
 
   test:e2e:
     desc: Runs the e2e tests
     cmds:
-      - task: ts-proto:test:e2e
+      - |
+        grpcurl -proto proto/echo/v1/echo.proto -plaintext -d @ localhost:$CONNECT_ES_GRPC_SERVER_PORT echo.v1.EchoService/Echo <<EOM
+        { "message": "Hi, connect-es!" }
+        EOM
+      - |
+        grpcurl -proto proto/echo/v1/echo.proto -plaintext -d @ localhost:$TS_PROTO_GRPC_SERVER_PORT echo.v1.EchoService/Echo <<EOM
+        { "message": "Hi, ts-proto!" }
+        EOM
 
   lint:
     desc: Lints the code
@@ -109,3 +117,5 @@ tasks:
       - proto/**/*.proto
       - buf.gen.yaml
       - buf.yaml
+      - connect-es/__proto__/**/*
+      - ts-proto/__proto__/**/*

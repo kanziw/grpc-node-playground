@@ -6,11 +6,14 @@
     "ts-proto"
   ],
   "scripts": {
+    "dev": "concurrently \"tsx watch --clear-screen=false ./connect-es/main.ts\" \"tsx watch --clear-screen=false ./ts-proto/main.ts\"",
     "format": "yarn biome check . --write"
   },
   "dependencies": {
+    "@bufbuild/protobuf": "^1.10.0",
     "@grpc/grpc-js": "^1.11.1",
     "@grpc/proto-loader": "^0.7.13",
+    "@kanziw/grpc-es": "^0.2.1",
     "await-to-js": "^3.0.0",
     "long": "^5.2.3",
     "mali": "https://github.com/malijs/mali",
@@ -19,6 +22,7 @@
   "devDependencies": {
     "@biomejs/biome": "^1.8.3",
     "@types/node": "^22.2.0",
+    "concurrently": "^8.2.2",
     "tsx": "^4.17.0",
     "typescript": "^5.5.4"
   }
