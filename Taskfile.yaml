@@ -40,3 +40,36 @@ tasks:
       - yarn install
     sources:
       - yarn.lock
+
+  format:
+    desc: Formats the code
+    cmds:
+      - task: format:proto
+
+  lint:
+    desc: Lints the code
+    cmds:
+      - task: lint:proto
+
+  format:proto:
+    desc: Formats the proto files
+    cmds:
+      - buf format -w
+    sources:
+      - buf.yaml
+
+  lint:proto:
+    desc: Lints the proto files
+    cmds:
+      - buf lint
+    sources:
+      - proto/**/*.proto
+      - buf.yaml
+
+  update:buf:deps:
+    desc: Updates buf dependencies
+    cmds:
+      - buf dep update
+    sources:
+      - proto/**/*.proto
+      - buf.yaml

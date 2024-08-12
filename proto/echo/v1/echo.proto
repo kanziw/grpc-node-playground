@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+package echo.v1;
+
+import "google/protobuf/timestamp.proto";
+
+service EchoService {
+  rpc Echo(EchoRequest) returns (EchoResponse);
+  rpc EchoStream(EchoStreamRequest) returns (stream EchoStreamResponse);
+  rpc StreamEcho(stream StreamEchoRequest) returns (StreamEchoResponse);
+  rpc Chat(stream ChatRequest) returns (stream ChatResponse);
+}
+
+message EchoRequest {
+  string message = 1;
+}
+
+message EchoResponse {
+  string message = 1;
+  google.protobuf.Timestamp response_time = 2;
+}
+
+message EchoStreamRequest {
+  string message = 1;
+  int32 repeat_count = 2;
+}
+
+message EchoStreamResponse {
+  string message = 1;
+  int32 sequence_number = 2;
+  google.protobuf.Timestamp response_time = 3;
+}
+
+message StreamEchoRequest {
+  string message_part = 1;
+}
+
+message StreamEchoResponse {
+  string full_message = 1;
+  google.protobuf.Timestamp response_time = 2;
+}
+
+message ChatRequest {
+  string user_id = 1;
+  string message = 2;
+  google.protobuf.Timestamp response_time = 3;
+}
+
+message ChatResponse {
+  string user_id = 1;
+  string message = 2;
+  google.protobuf.Timestamp response_time = 3;
+}
