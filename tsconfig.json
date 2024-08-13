@@ -1,5 +1,4 @@
 {
-  "include": ["ts-proto"],
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
@@ -12,7 +11,7 @@
     "moduleResolution": "NodeNext",
     "resolveJsonModule": true,
     "target": "ES2023",
-    "skipLibCheck": true,
+    "skipLibCheck": false,
     "strict": true,
     "forceConsistentCasingInFileNames": true
   },

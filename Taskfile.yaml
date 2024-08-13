@@ -64,6 +64,11 @@ tasks:
   test:e2e:
     desc: Runs the e2e tests
     cmds:
+      - yarn tsx ts-proto-client/e2e.ts
+
+  test:e2e:grpcurl:
+    desc: Runs the e2e tests using grpcurl
+    cmds:
       - |
         grpcurl -proto proto/echo/v1/echo.proto -plaintext -d @ localhost:$CONNECT_ES_GRPC_SERVER_PORT echo.v1.EchoService/Echo <<EOM
         { "message": "Hi, connect-es!" }

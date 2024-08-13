@@ -353,9 +353,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@kanziw/grpc-es@npm:^0.2.1":
-  version: 0.2.1
-  resolution: "@kanziw/grpc-es@npm:0.2.1"
+"@kanziw/grpc-es@npm:^0.2.2":
+  version: 0.2.2
+  resolution: "@kanziw/grpc-es@npm:0.2.2"
   dependencies:
     "@bufbuild/protobuf": "npm:^1.10.0"
     "@connectrpc/connect": "npm:^1.4.0"
@@ -364,7 +364,7 @@ __metadata:
     "@bufbuild/protobuf": ^1.10.0
     "@connectrpc/connect": ^1.4.0
     "@connectrpc/connect-node": ^1.4.0
-  checksum: 10c0/281a9541dcd14a50e4bd288ab4c7dc3d874eb726a585ac33a69f90b3bacae5a340983d593bc8eeffdaf20b63b70d201786f56e6d1a51c1eec3415d572a4e3aaa
+  checksum: 10c0/460c30ba6f7aad6882419a282f2056fbece81aad6cb109703d638b6d65db3c70a815f013a14a9f19b8208db89da1dae45fb08672a8169626460315ae59188765
   languageName: node
   linkType: hard
 
@@ -951,7 +951,7 @@ __metadata:
     "@bufbuild/protobuf": "npm:^1.10.0"
     "@grpc/grpc-js": "npm:^1.11.1"
     "@grpc/proto-loader": "npm:^0.7.13"
-    "@kanziw/grpc-es": "npm:^0.2.1"
+    "@kanziw/grpc-es": "npm:^0.2.2"
     "@types/node": "npm:^22.2.0"
     await-to-js: "npm:^3.0.0"
     concurrently: "npm:^8.2.2"
