@@ -64,6 +64,7 @@ tasks:
   test:e2e:
     desc: Runs the e2e tests
     cmds:
+      - yarn tsx connect-es-client/e2e.ts
       - yarn tsx ts-proto-client/e2e.ts
 
   test:e2e:grpcurl:
