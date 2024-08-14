@@ -7,7 +7,7 @@ const GRPC_SERVER_PORT = Number(process.env.CONNECT_ES_GRPC_SERVER_PORT) || 8085
 
 async function main() {
   const grpcServer = makeGrpcServer();
-  grpcServer.listenAndServe(GRPC_SERVER_PORT);
+  grpcServer.start(GRPC_SERVER_PORT);
 
   const client = createPromiseClient(
     EchoService,

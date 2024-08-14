@@ -353,17 +353,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@kanziw/grpc-es@npm:^0.2.4":
-  version: 0.2.4
-  resolution: "@kanziw/grpc-es@npm:0.2.4"
-  dependencies:
-    "@bufbuild/protobuf": "npm:^1.10.0"
-    "@connectrpc/connect": "npm:^1.4.0"
-    "@connectrpc/connect-node": "npm:^1.4.0"
-  checksum: 10c0/a68eae43f624abbe96d3d8ef24bb9ad06060cac3acaca8054332c821297362250fd7601aedc0ecb5899431a56e4b621a82f637cc778e6c405662dfd93a48c8c6
-  languageName: node
-  linkType: hard
-
 "@malijs/call-types@npm:~0.4.0":
   version: 0.4.0
   resolution: "@malijs/call-types@npm:0.4.0"
@@ -949,7 +938,6 @@ __metadata:
     "@connectrpc/connect-node": "npm:^1.4.0"
     "@grpc/grpc-js": "npm:^1.11.1"
     "@grpc/proto-loader": "npm:^0.7.13"
-    "@kanziw/grpc-es": "npm:^0.2.4"
     "@types/node": "npm:^22.2.0"
     await-to-js: "npm:^3.0.0"
     concurrently: "npm:^8.2.2"

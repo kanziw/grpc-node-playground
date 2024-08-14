@@ -3,7 +3,7 @@ import type { Handler } from '~/ts-proto/context.js';
 
 export const echo: Handler<EchoRequest, EchoResponse> = async (ctx) => {
   return {
-    message: ctx.req.message,
+    message: `you said: ${ctx.req.message}`,
     response_time: new Date(),
   };
 };
