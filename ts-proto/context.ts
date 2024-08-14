@@ -1,7 +1,10 @@
 import { to } from 'await-to-js';
 import type { Context as MaliContext } from 'mali';
+import type { Logger } from '~/lib/logger.js';
 
-export type AppContext = Record<string, unknown>;
+export interface AppContext {
+  logger: Logger;
+}
 
 export interface Context<Request = unknown, Response = unknown> extends MaliContext<AppContext> {
   metadata: Record<string, unknown>;

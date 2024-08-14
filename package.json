@@ -13,6 +13,7 @@
     "@grpc/grpc-js": "^1.11.1",
     "@grpc/proto-loader": "^0.7.13",
     "await-to-js": "^3.0.0",
+    "http-status-codes": "^2.3.0",
     "long": "^5.2.3",
     "mali": "https://github.com/malijs/mali",
     "protobufjs": "^7.3.2"
