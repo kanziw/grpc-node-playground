@@ -1,14 +1,14 @@
 import { performance } from 'node:perf_hooks';
 import { MethodKind } from '@bufbuild/protobuf';
 import { Code, ConnectError, type Interceptor } from '@connectrpc/connect';
-import { ConsoleLogger, type Logger } from '~/lib/logger.js';
+import { extractLogger } from '~/connect-es/context/logger.js';
+import { extractCtxTags } from '~/connect-es/context/tags.js';
 
 type Options = {
-  logger?: Logger;
   privateMetadataKeys?: string[];
 };
 
-export const stdoutUnaryServerInterceptor = ({ logger = ConsoleLogger(), privateMetadataKeys = [] }: Options = {}): Interceptor => {
+export const stdoutUnaryServerInterceptor = ({ privateMetadataKeys = [] }: Options = {}): Interceptor => {
   const privateMetadataKeySet = new Set(privateMetadataKeys);
   const isPrivateMetadataKey = (key: string) => privateMetadataKeySet.has(key);
 
@@ -34,7 +34,7 @@ export const stdoutUnaryServerInterceptor = ({ logger = ConsoleLogger(), private
         headers[key] = value;
       }
 
-      logger.info({
+      extractLogger(req.contextValues).info({
         kind: 'grpc',
         grpc: {
           code,
@@ -46,6 +46,7 @@ export const stdoutUnaryServerInterceptor = ({ logger = ConsoleLogger(), private
         },
         headers,
         msg: `finished unary call with code ${code}`,
+        ...extractCtxTags(req.contextValues).values(),
         ...errLog,
       });
     }
