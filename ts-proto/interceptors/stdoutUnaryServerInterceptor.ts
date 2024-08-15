@@ -3,6 +3,7 @@ import { status } from '@grpc/grpc-js';
 
 import type { Context } from '~/ts-proto/context.js';
 import { BaseError } from '~/ts-proto/error.js';
+import { parseKind } from '~/ts-proto/interceptors/parseKind.js';
 
 // Seems to be fixed at typescript 4.4.0-dev.20210627
 // @see https://github.com/Microsoft/TypeScript/issues/24587#issuecomment-890314169
@@ -48,8 +49,6 @@ export const stdoutUnaryServerInterceptor = ({ privateMetadataKeys = [] }: Optio
       app: {
         context: { logger },
       },
-      request: { type: requestType },
-      response: { type: responseType },
     } = ctx;
     locals[KEY_FOR_TAGS] = {};
 
@@ -74,8 +73,7 @@ export const stdoutUnaryServerInterceptor = ({ privateMetadataKeys = [] }: Optio
       const grpc = {
         code,
         method: name,
-        // TODO: Support other method kinds
-        kind: requestType === 'unary' && responseType === 'unary' ? 'unary' : 'unknown',
+        kind: parseKind(ctx),
         service: `${pkg}.${service}`,
         start_time: startsAt.toISOString(),
         time_ms: (performance.now() - before).toFixed(3),

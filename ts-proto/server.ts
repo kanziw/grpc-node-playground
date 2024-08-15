@@ -1,5 +1,6 @@
 import Mali from 'mali';
 import { ConsoleLogger } from '~/lib/logger.js';
+import { statsUnaryServerInterceptor } from '~/ts-proto/interceptors/statsUnaryServerInterceptor.js';
 import { EchoServiceService as EchoService } from './__proto__/echo/v1/echo.js';
 import { type AppContext, wrapHandlers } from './context.js';
 import { unhandledErrorHandler } from './error.js';
@@ -14,7 +15,7 @@ export const makeGrpcServer = () => {
     logger,
   };
 
-  app.use(stdoutUnaryServerInterceptor());
+  app.use(stdoutUnaryServerInterceptor(), statsUnaryServerInterceptor());
 
   app.use({
     EchoService: wrapHandlers(echoService),
