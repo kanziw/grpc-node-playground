@@ -2,10 +2,35 @@ syntax = "proto3";
 
 package echo.v1;
 
+import "google/api/annotations.proto";
 import "google/protobuf/timestamp.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  info: {
+    title: "Echo"
+    version: "0.0.1"
+    description: ""
+    contact: {
+      name: "kanziw"
+      url: "https://github.com/kanziw/grpc-node-playground"
+      email: "kanziwoong@gmail.com"
+    }
+  }
+  schemes: HTTPS
+  consumes: "application/json"
+  produces: "application/json"
+};
 
 service EchoService {
-  rpc Echo(EchoRequest) returns (EchoResponse);
+  rpc Echo(EchoRequest) returns (EchoResponse) {
+    option (google.api.http) = {
+      get: "/echo/{message}"
+      additional_bindings {
+        get: "/v1/echo/{message}"
+      }
+    };
+  };
   rpc EchoStream(EchoStreamRequest) returns (stream EchoStreamResponse);
   rpc StreamEcho(stream StreamEchoRequest) returns (StreamEchoResponse);
   rpc Chat(stream ChatRequest) returns (stream ChatResponse);

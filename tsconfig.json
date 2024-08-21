@@ -4,6 +4,7 @@
     "paths": {
       "~/*": ["./*"]
     },
+    "outDir": "./dist",
     "lib": ["ESNext"],
     "isolatedModules": true,
     "esModuleInterop": true,

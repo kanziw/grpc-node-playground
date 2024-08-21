@@ -1,7 +1,7 @@
 import { createPromiseClient } from '@connectrpc/connect';
 import { createGrpcTransport } from '@connectrpc/connect-node';
 import { EchoService } from '~/connect-es/__proto__/echo/v1/echo_pb.js';
-import { makeGrpcServer } from '~/connect-es/server.js';
+import { makeGrpcServer } from '~/connect-es/grpcServer.js';
 
 const GRPC_SERVER_PORT = Number(process.env.CONNECT_ES_GRPC_SERVER_PORT) || 8085;
 

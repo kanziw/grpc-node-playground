@@ -1,7 +1,12 @@
 version: v2
+inputs:
+  - directory: proto
 clean: true
 managed:
   enabled: true
+  disable:
+    - module: buf.build/googleapis/googleapis
+    - module: buf.build/grpc-ecosystem/grpc-gateway
 plugins:
   # https://buf.build/community/stephenh-ts-proto
   - remote: buf.build/community/stephenh-ts-proto:v1.178.0
@@ -32,6 +37,7 @@ plugins:
       - useNullAsOptional=true
       - importSuffix=.js
       - enumsAsLiterals=true
+  # https://buf.build/bufbuild/es
   - remote: buf.build/bufbuild/es:v2.0.0
     out: connect-es/__proto__
     opt: target=ts

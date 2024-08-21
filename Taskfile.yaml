@@ -118,7 +118,7 @@ tasks:
   generate:proto:
     desc: Generates the proto files
     cmds:
-      - buf generate
+      - buf generate --include-imports
     sources:
       - proto/**/*.proto
       - buf.gen.yaml

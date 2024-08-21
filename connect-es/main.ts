@@ -1,4 +1,4 @@
-import { makeGrpcServer } from './server.js';
+import { makeGrpcServer } from './grpcServer.js';
 
 const GRPC_SERVER_PORT = Number(process.env.CONNECT_ES_GRPC_SERVER_PORT) || 8085;
 
