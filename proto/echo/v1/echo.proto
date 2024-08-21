@@ -25,7 +25,7 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
 service EchoService {
   rpc Echo(EchoRequest) returns (EchoResponse) {
     option (google.api.http) = {
-      get: "/echo/{message}"
+      get: "/echo"
       additional_bindings {
         get: "/v1/echo/{message}"
       }
