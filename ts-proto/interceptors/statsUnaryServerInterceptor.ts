@@ -26,7 +26,7 @@ export const statsUnaryServerInterceptor = () => {
       NoopLogger().info({
         method, // "Echo"
         code, // "OK"
-        kind: parseKind(ctx), // "Unary"
+        kind: parseKind(ctx),
         elapsedMs, // 0.05637500000000273
         fullName, // "/echo.v1.EchoService/Echo"
         package: pkg, // "echo.v1"

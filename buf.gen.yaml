@@ -32,9 +32,6 @@ plugins:
       - useNullAsOptional=true
       - importSuffix=.js
       - enumsAsLiterals=true
-  - remote: buf.build/bufbuild/es:v1.10.0
-    out: connect-es/__proto__
-    opt: target=ts
-  - remote: buf.build/connectrpc/es:v1.4.0
+  - remote: buf.build/bufbuild/es:v2.0.0
     out: connect-es/__proto__
     opt: target=ts

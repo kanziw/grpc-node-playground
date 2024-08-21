@@ -1,5 +1,4 @@
 import { performance } from 'node:perf_hooks';
-import { MethodKind } from '@bufbuild/protobuf';
 import { Code, ConnectError, type Interceptor } from '@connectrpc/connect';
 import { extractLogger } from '~/connect-es/context/logger.js';
 import { extractCtxTags } from '~/connect-es/context/tags.js';
@@ -39,7 +38,7 @@ export const stdoutUnaryServerInterceptor = ({ privateMetadataKeys = [] }: Optio
         grpc: {
           code,
           method: req.method.name,
-          kind: MethodKind[req.method.kind],
+          kind: req.method.methodKind,
           service: req.service.typeName,
           start_time: startsAt.toISOString(),
           time_ms: (performance.now() - before).toFixed(3),

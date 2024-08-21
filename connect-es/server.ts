@@ -1,7 +1,7 @@
 import * as http2 from 'node:http2';
 import { connectNodeAdapter } from '@connectrpc/connect-node';
 import { statsUnaryServerInterceptor } from '~/connect-es/interceptors/statsUnaryServerInterceptor.js';
-import { EchoService } from './__proto__/echo/v1/echo_connect.js';
+import { EchoService } from './__proto__/echo/v1/echo_pb.js';
 import { SetLogger } from './context/logger.js';
 import { SetTags } from './context/tags.js';
 import { pipeCtxValues } from './context/types.js';

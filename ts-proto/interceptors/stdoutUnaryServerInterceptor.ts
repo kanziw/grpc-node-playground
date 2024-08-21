@@ -68,7 +68,6 @@ export const stdoutUnaryServerInterceptor = ({ privateMetadataKeys = [] }: Optio
       }
       throw e;
     } finally {
-      console.log('', JSON.stringify(ctx, null, 2));
 
       const grpc = {
         code,

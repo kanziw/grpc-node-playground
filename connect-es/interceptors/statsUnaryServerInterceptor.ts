@@ -1,4 +1,3 @@
-import { MethodKind } from '@bufbuild/protobuf';
 import { Code, ConnectError, type Interceptor } from '@connectrpc/connect';
 import { NoopLogger } from '~/lib/logger.js';
 
@@ -18,7 +17,7 @@ export const statsUnaryServerInterceptor = (): Interceptor => {
 
       const {
         service: { typeName },
-        method: { name: method, kind },
+        method: { name: method, methodKind: kind },
       } = req;
 
       const typeNames = typeName.split('.');
@@ -28,7 +27,7 @@ export const statsUnaryServerInterceptor = (): Interceptor => {
       NoopLogger().info({
         method, // "Echo"
         code, // "Ok"
-        kind: MethodKind[kind], // "Unary"
+        kind, // "unary" | "server_streaming" | "client_streaming" | "bidi_streaming"
         elapsedMs: performance.now() - before, // 0.05637500000000273
         fullName: `/${req.service.typeName}/${method}`, // "/echo.v1.EchoService/Echo"
         package: typeNames.join('.'), // "echo.v1"

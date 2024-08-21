@@ -7,9 +7,9 @@
     "format": "yarn biome check . --write"
   },
   "dependencies": {
-    "@bufbuild/protobuf": "^1.10.0",
-    "@connectrpc/connect": "^1.4.0",
-    "@connectrpc/connect-node": "^1.4.0",
+    "@bufbuild/protobuf": "^2.0.0",
+    "@connectrpc/connect": "^2.0.0-alpha.1",
+    "@connectrpc/connect-node": "^2.0.0-alpha.1",
     "@grpc/grpc-js": "^1.11.1",
     "@grpc/proto-loader": "^0.7.13",
     "await-to-js": "^3.0.0",
@@ -20,6 +20,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^1.8.3",
+    "@bufbuild/buf": "^1.37.0",
     "@types/node": "^22.2.0",
     "concurrently": "^8.2.2",
     "tsx": "^4.17.0",
