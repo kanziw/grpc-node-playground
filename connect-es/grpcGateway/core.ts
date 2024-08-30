@@ -1,10 +1,11 @@
 import type { IncomingHttpHeaders } from 'node:http';
 import { type DescMessage, type DescService, type JsonValue, type MessageInitShape, type MessageShape, create, fromBinary, fromJson, getOption, toJson } from '@bufbuild/protobuf';
 import type { GenFile } from '@bufbuild/protobuf/codegenv1';
-import { Code, ConnectError, createPromiseClient } from '@connectrpc/connect';
+import { createPromiseClient } from '@connectrpc/connect';
 import { createGrpcTransport } from '@connectrpc/connect-node';
+import { StatusCodes } from 'http-status-codes';
 import { http } from '~/connect-es/__proto__/google/api/annotations_pb.js';
-import { LocalizedMessageSchema } from '~/connect-es/__proto__/google/rpc/error_details_pb.js';
+import { parseErrorResponseJson } from './error.js';
 
 export type CoreOptions = {
   service: DescService;
@@ -48,44 +49,14 @@ export const grpcGatewayCore = ({ service, serviceDescriptor, grpcServerPort, re
           ),
         );
 
-        let responseJson: JsonValue;
-
         try {
           // @ts-ignore
           const resp = await client[method](input);
 
-          responseJson = toJson(grpc.output, resp);
+          return { responseJson: toJson(grpc.output, resp), httpStatusCode: StatusCodes.OK };
         } catch (unknownErr) {
-          const err = ConnectError.from(unknownErr, Code.Internal);
-
-          const details: JsonValue[] = [];
-          for (const detail of err.details) {
-            let schema: DescMessage | undefined;
-            let value: MessageShape<DescMessage> | undefined;
-
-            if ('type' in detail) {
-              schema = messages[detail.type];
-              value = fromBinary(schema, detail.value);
-            }
-            if ('desc' in detail) {
-              schema = detail.desc;
-              value = detail.value as MessageShape<DescMessage>;
-            }
-
-            if (schema && value) {
-              details.push(toJson(schema, value));
-            }
-          }
-
-          responseJson = {
-            code: err.code,
-            message: err.rawMessage,
-            details,
-          };
+          return parseErrorResponseJson(messages, unknownErr);
         }
-
-        // TODO: handle status code
-        return { responseJson, httpStatusCode: 200 };
       });
     }
   }
