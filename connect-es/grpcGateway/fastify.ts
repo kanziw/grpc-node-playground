@@ -24,24 +24,5 @@ export const grpcGateway = (options: Options): FastifyPluginAsync => {
         });
       },
     });
-    // for (const [method, infos = []] of Object.entries(spec)) {
-    //   for (const { http, grpc } of infos) {
-    //     app.route({
-    //       method: http.method,
-    //       url: http.path,
-    //       handler: async (req, reply) => {
-    //         const input = create(grpc.input, {
-    //           ...(req.query ?? {}),
-    //           ...(req.body ?? {}),
-    //           ...(req.params ?? {}),
-    //         });
-
-    //         // @ts-ignore
-    //         const resp = await client[method](input);
-    //         reply.send(toJson(grpc.output, resp));
-    //       },
-    //     });
-    //   }
-    // }
   };
 };
