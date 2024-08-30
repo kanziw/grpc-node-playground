@@ -105,79 +105,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@bufbuild/buf-darwin-arm64@npm:1.37.0":
-  version: 1.37.0
-  resolution: "@bufbuild/buf-darwin-arm64@npm:1.37.0"
-  conditions: os=darwin & cpu=arm64
-  languageName: node
-  linkType: hard
-
-"@bufbuild/buf-darwin-x64@npm:1.37.0":
-  version: 1.37.0
-  resolution: "@bufbuild/buf-darwin-x64@npm:1.37.0"
-  conditions: os=darwin & cpu=x64
-  languageName: node
-  linkType: hard
-
-"@bufbuild/buf-linux-aarch64@npm:1.37.0":
-  version: 1.37.0
-  resolution: "@bufbuild/buf-linux-aarch64@npm:1.37.0"
-  conditions: os=linux & cpu=arm64
-  languageName: node
-  linkType: hard
-
-"@bufbuild/buf-linux-x64@npm:1.37.0":
-  version: 1.37.0
-  resolution: "@bufbuild/buf-linux-x64@npm:1.37.0"
-  conditions: os=linux & cpu=x64
-  languageName: node
-  linkType: hard
-
-"@bufbuild/buf-win32-arm64@npm:1.37.0":
-  version: 1.37.0
-  resolution: "@bufbuild/buf-win32-arm64@npm:1.37.0"
-  conditions: os=win32 & cpu=arm64
-  languageName: node
-  linkType: hard
-
-"@bufbuild/buf-win32-x64@npm:1.37.0":
-  version: 1.37.0
-  resolution: "@bufbuild/buf-win32-x64@npm:1.37.0"
-  conditions: os=win32 & cpu=x64
-  languageName: node
-  linkType: hard
-
-"@bufbuild/buf@npm:^1.37.0":
-  version: 1.37.0
-  resolution: "@bufbuild/buf@npm:1.37.0"
-  dependencies:
-    "@bufbuild/buf-darwin-arm64": "npm:1.37.0"
-    "@bufbuild/buf-darwin-x64": "npm:1.37.0"
-    "@bufbuild/buf-linux-aarch64": "npm:1.37.0"
-    "@bufbuild/buf-linux-x64": "npm:1.37.0"
-    "@bufbuild/buf-win32-arm64": "npm:1.37.0"
-    "@bufbuild/buf-win32-x64": "npm:1.37.0"
-  dependenciesMeta:
-    "@bufbuild/buf-darwin-arm64":
-      optional: true
-    "@bufbuild/buf-darwin-x64":
-      optional: true
-    "@bufbuild/buf-linux-aarch64":
-      optional: true
-    "@bufbuild/buf-linux-x64":
-      optional: true
-    "@bufbuild/buf-win32-arm64":
-      optional: true
-    "@bufbuild/buf-win32-x64":
-      optional: true
-  bin:
-    buf: bin/buf
-    protoc-gen-buf-breaking: bin/protoc-gen-buf-breaking
-    protoc-gen-buf-lint: bin/protoc-gen-buf-lint
-  checksum: 10c0/f59f5ff18370243ed69b0a8203265583dcd960549f5d4bdafa9451a53194d9708714585409017c53f6f900c39835faa5adf4a9fced11778b4937a0fe746d2525
-  languageName: node
-  linkType: hard
-
 "@bufbuild/protobuf@npm:^2.0.0":
   version: 2.0.0
   resolution: "@bufbuild/protobuf@npm:2.0.0"
@@ -1286,7 +1213,6 @@ __metadata:
   resolution: "grpc-node-playground@workspace:."
   dependencies:
     "@biomejs/biome": "npm:^1.8.3"
-    "@bufbuild/buf": "npm:^1.37.0"
     "@bufbuild/protobuf": "npm:^2.0.0"
     "@connectrpc/connect": "npm:^2.0.0-alpha.1"
     "@connectrpc/connect-node": "npm:^2.0.0-alpha.1"
