@@ -9,7 +9,7 @@ grpcServer.start(GRPC_SERVER_PORT);
 
 console.log(`Start gRPC Server w/ connect-es on port ${GRPC_SERVER_PORT}`);
 
-const httpServer = makeHttpServer({
+const httpServer = await makeHttpServer({
   grpcServerPort: GRPC_SERVER_PORT,
 });
 const serverUrl = await httpServer.listen({ port: HTTP_SERVER_PORT, host: '0.0.0.0' });
