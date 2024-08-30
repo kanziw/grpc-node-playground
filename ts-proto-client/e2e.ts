@@ -1,6 +1,6 @@
 import { makeGrpcClient } from '~/ts-proto-client/grpcClient.js';
 import { EchoServiceClient } from '~/ts-proto/__proto__/echo/v1/echo.js';
-import { makeGrpcServer } from '~/ts-proto/server.js';
+import { makeGrpcServer } from '~/ts-proto/grpcServer.js';
 
 const GRPC_SERVER_PORT = process.env.TS_PROTO_GRPC_SERVER_PORT ?? '8086';
 

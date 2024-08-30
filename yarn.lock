@@ -319,6 +319,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@fastify/cors@npm:^9.0.1":
+  version: 9.0.1
+  resolution: "@fastify/cors@npm:9.0.1"
+  dependencies:
+    fastify-plugin: "npm:^4.0.0"
+    mnemonist: "npm:0.39.6"
+  checksum: 10c0/4db9d3d02edbca741c8ed053819bf3b235ecd70e07c640ed91ba0fc1ee2dc8abedbbffeb79ae1a38ccbf59832e414cad90a554ee44227d0811d5a2d062940611
+  languageName: node
+  linkType: hard
+
 "@fastify/error@npm:^3.3.0, @fastify/error@npm:^3.4.0":
   version: 3.4.1
   resolution: "@fastify/error@npm:3.4.1"
@@ -505,12 +515,39 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/emscripten@npm:^1.39.6":
+  version: 1.39.13
+  resolution: "@types/emscripten@npm:1.39.13"
+  checksum: 10c0/99c314418b6fbe113c4c81dc89501bdf723020d1de262a36a4e45236b268dcec3deab104e3a7d3569e6d7c5c942de30c9c6d77b93170c1bcaa85620c7ee4c2ba
+  languageName: node
+  linkType: hard
+
 "@types/node@npm:>=13.7.0, @types/node@npm:^22.2.0":
   version: 22.2.0
   resolution: "@types/node@npm:22.2.0"
   dependencies:
     undici-types: "npm:~6.13.0"
   checksum: 10c0/c17900b34faecfec204f72970bd658d0c217aaf739c1bf7690c969465b6b26b77a8be1cd9ba735aadbd1dd20b5c3e4f406ec33528bf7c6eec90744886c5d5608
+  languageName: node
+  linkType: hard
+
+"@yarnpkg/fslib@npm:^2.6.0-rc.8":
+  version: 2.10.4
+  resolution: "@yarnpkg/fslib@npm:2.10.4"
+  dependencies:
+    "@yarnpkg/libzip": "npm:^2.3.0"
+    tslib: "npm:^1.13.0"
+  checksum: 10c0/946ef7bf7a5a5dd02317416b0a8343c99edb4033eae70f6101bce2a452d3d60d17ce18555e1f2f16b2b3bcb23d71f4b2b9792f43d064800f72fff678008f7839
+  languageName: node
+  linkType: hard
+
+"@yarnpkg/libzip@npm:^2.2.2, @yarnpkg/libzip@npm:^2.3.0":
+  version: 2.3.0
+  resolution: "@yarnpkg/libzip@npm:2.3.0"
+  dependencies:
+    "@types/emscripten": "npm:^1.39.6"
+    tslib: "npm:^1.13.0"
+  checksum: 10c0/0c2361ccb002e28463ed98541f3bdaab54f52aad6a2080666c2a9ea605ebd9cdfb7b0340b1db6f105820d05bcb803cdfb3ce755a8f6034657298c291bf884f81
   languageName: node
   linkType: hard
 
@@ -778,6 +815,13 @@ __metadata:
   version: 0.6.0
   resolution: "cookie@npm:0.6.0"
   checksum: 10c0/f2318b31af7a31b4ddb4a678d024514df5e705f9be5909a192d7f116cfb6d45cbacf96a473fa733faa95050e7cff26e7832bb3ef94751592f1387b71c8956686
+  languageName: node
+  linkType: hard
+
+"core-js@npm:3.34.0":
+  version: 3.34.0
+  resolution: "core-js@npm:3.34.0"
+  checksum: 10c0/408a77898abe03bf3e5dec2a451c36f4745081cca9022f8bdf9b817d57bb6d3a534d555f47a4b95e1daa5e21dbc79122eac2402e25720d425f5925127e55dcd8
   languageName: node
   linkType: hard
 
@@ -1055,6 +1099,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"fastify-plugin@npm:^4.0.0":
+  version: 4.5.1
+  resolution: "fastify-plugin@npm:4.5.1"
+  checksum: 10c0/f58f79cd9d3c88fd7f79a3270276c6339fc57bbe72ef14d20b73779193c404e317ac18e8eae2c5071b3909ebee45d7eb6871da4e65464ac64ed0d9746b4e9b9f
+  languageName: node
+  linkType: hard
+
 "fastify@npm:^4.28.1":
   version: 4.28.1
   resolution: "fastify@npm:4.28.1"
@@ -1216,6 +1267,7 @@ __metadata:
     "@bufbuild/protobuf": "npm:^2.0.0"
     "@connectrpc/connect": "npm:^2.0.0-alpha.1"
     "@connectrpc/connect-node": "npm:^2.0.0-alpha.1"
+    "@fastify/cors": "npm:^9.0.1"
     "@grpc/grpc-js": "npm:^1.11.1"
     "@grpc/proto-loader": "npm:^0.7.13"
     "@types/node": "npm:^22.2.0"
@@ -1225,6 +1277,7 @@ __metadata:
     http-status-codes: "npm:^2.3.0"
     long: "npm:^5.2.3"
     mali: "https://github.com/malijs/mali"
+    pbkit: "npm:^0.0.70"
     protobufjs: "npm:^7.3.2"
     rimraf: "npm:^6.0.1"
     tsx: "npm:^4.17.0"
@@ -1599,6 +1652,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"mnemonist@npm:0.39.6":
+  version: 0.39.6
+  resolution: "mnemonist@npm:0.39.6"
+  dependencies:
+    obliterator: "npm:^2.0.1"
+  checksum: 10c0/a538945ea547976136ee6e16f224c0a50983143619941f6c4d2c82159e36eb6f8ee93d69d3a1267038fc5b16f88e2d43390023de10dfb145fa15c5e2befa1cdf
+  languageName: node
+  linkType: hard
+
+"mri@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "mri@npm:1.2.0"
+  checksum: 10c0/a3d32379c2554cf7351db6237ddc18dc9e54e4214953f3da105b97dc3babe0deb3ffe99cf409b38ea47cc29f9430561ba6b53b24ab8f9ce97a4b50409e4a50e7
+  languageName: node
+  linkType: hard
+
 "ms@npm:2.1.2":
   version: 2.1.2
   resolution: "ms@npm:2.1.2"
@@ -1641,6 +1710,13 @@ __metadata:
   bin:
     nopt: bin/nopt.js
   checksum: 10c0/a069c7c736767121242037a22a788863accfa932ab285a1eb569eb8cd534b09d17206f68c37f096ae785647435e0c5a5a0a67b42ec743e481a455e5ae6a6df81
+  languageName: node
+  linkType: hard
+
+"obliterator@npm:^2.0.1":
+  version: 2.0.4
+  resolution: "obliterator@npm:2.0.4"
+  checksum: 10c0/ff2c10d4de7d62cd1d588b4d18dfc42f246c9e3a259f60d5716f7f88e5b3a3f79856b3207db96ec9a836a01d0958a21c15afa62a3f4e73a1e0b75f2c2f6bab40
   languageName: node
   linkType: hard
 
@@ -1691,6 +1767,21 @@ __metadata:
     lru-cache: "npm:^11.0.0"
     minipass: "npm:^7.1.2"
   checksum: 10c0/3da4adedaa8e7ef8d6dc4f35a0ff8f05a9b4d8365f2b28047752b62d4c1ad73eec21e37b1579ef2d075920157856a3b52ae8309c480a6f1a8bbe06ff8e52b33c
+  languageName: node
+  linkType: hard
+
+"pbkit@npm:^0.0.70":
+  version: 0.0.70
+  resolution: "pbkit@npm:0.0.70"
+  dependencies:
+    "@yarnpkg/fslib": "npm:^2.6.0-rc.8"
+    "@yarnpkg/libzip": "npm:^2.2.2"
+    core-js: "npm:3.34.0"
+    mri: "npm:^1.2.0"
+  bin:
+    pb-gen-ts: compat/node/cli/pb-gen-ts.js
+    pb-gen-ts-bundle: compat/node/cli/pb-gen-ts-bundle.js
+  checksum: 10c0/dbdf63f30071f51d998b2a49f7d14db97c1218e2b49ddc7cbc2817aaaf64f3f2e0494f2a9b2d6ab2d7783af5e7a2f6c9f0a64276eccde49a3a295d9c30158eaa
   languageName: node
   linkType: hard
 
@@ -2157,6 +2248,13 @@ __metadata:
   bin:
     tree-kill: cli.js
   checksum: 10c0/7b1b7c7f17608a8f8d20a162e7957ac1ef6cd1636db1aba92f4e072dc31818c2ff0efac1e3d91064ede67ed5dc57c565420531a8134090a12ac10cf792ab14d2
+  languageName: node
+  linkType: hard
+
+"tslib@npm:^1.13.0":
+  version: 1.14.1
+  resolution: "tslib@npm:1.14.1"
+  checksum: 10c0/69ae09c49eea644bc5ebe1bca4fa4cc2c82b7b3e02f43b84bd891504edf66dbc6b2ec0eef31a957042de2269139e4acff911e6d186a258fb14069cd7f6febce2
   languageName: node
   linkType: hard
 

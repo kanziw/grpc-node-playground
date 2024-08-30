@@ -14,4 +14,4 @@ const httpServer = await makeHttpServer({
 });
 const serverUrl = await httpServer.listen({ port: HTTP_SERVER_PORT, host: '0.0.0.0' });
 
-console.log(`Start HTTP Server on ${serverUrl}`);
+console.log(`Start HTTP Server w/ connect-es on ${serverUrl}`);
