@@ -16,6 +16,8 @@ export const makeGrpcServer = () => {
       },
       contextValues: pipeCtxValues(SetTags, SetLogger),
       interceptors: [stdoutUnaryServerInterceptor(), statsUnaryServerInterceptor()],
+      connect: false,
+      grpcWeb: false,
     }),
   );
 
