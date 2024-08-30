@@ -1,6 +1,61 @@
-import { type DescMessage, type DescService, create, getOption, toJson } from '@bufbuild/protobuf';
+import type { IncomingHttpHeaders } from 'node:http';
+import { type DescMessage, type DescService, type JsonValue, create, fromJson, getOption, toJson } from '@bufbuild/protobuf';
 import type { GenFile } from '@bufbuild/protobuf/codegenv1';
+import { createPromiseClient } from '@connectrpc/connect';
+import { createGrpcTransport } from '@connectrpc/connect-node';
 import { http } from '~/connect-es/__proto__/google/api/annotations_pb.js';
+
+export type CoreOptions = {
+  service: DescService;
+  serviceDescriptor: GenFile;
+  grpcServerPort: number;
+  registerRoutes: (
+    method: HttpMethod,
+    path: string,
+    callRpc: (req: {
+      headers: IncomingHttpHeaders;
+      query: Record<string, string | string[]>;
+      body: Record<string, unknown>;
+      params: Record<string, string>;
+    }) => Promise<{ responseJson: JsonValue; httpStatusCode: number }>,
+  ) => void;
+};
+
+export const grpcGatewayCore = ({ service, serviceDescriptor, grpcServerPort, registerRoutes }: CoreOptions) => {
+  const spec = parseSpec<typeof service>(serviceDescriptor);
+  const client = createPromiseClient(
+    service,
+    createGrpcTransport({
+      baseUrl: `http://localhost:${grpcServerPort}`,
+      httpVersion: '2',
+    }),
+  );
+
+  for (const [method, infos = []] of Object.entries(spec)) {
+    for (const { http, grpc } of infos) {
+      registerRoutes(http.method, http.path, async (req) => {
+        const input = create(
+          grpc.input,
+          fromJson(
+            grpc.input,
+            {
+              ...req.query,
+              ...req.body,
+              ...req.params,
+            } as JsonValue,
+            { ignoreUnknownFields: true },
+          ),
+        );
+
+        // @ts-ignore
+        const resp = await client[method](input);
+
+        // TODO: handle status code
+        return { responseJson: toJson(grpc.output, resp), httpStatusCode: 200 };
+      });
+    }
+  }
+};
 
 export function parseSpec<Service extends DescService>(file: GenFile): Partial<Spec<Service>> {
   type Methods = keyof Service['method'];
