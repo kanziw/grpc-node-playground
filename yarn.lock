@@ -105,31 +105,29 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@bufbuild/protobuf@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "@bufbuild/protobuf@npm:2.0.0"
-  checksum: 10c0/e20874e092803d22b687b3c171ace9237f8528adf8b129c1b808ac43ebaf4f49a1dc5a0c83e5cc0ed81f4c092e7572c6d0ebb8c0e53394fb905a3507eabc9188
+"@bufbuild/protobuf@npm:^2.2.3":
+  version: 2.2.3
+  resolution: "@bufbuild/protobuf@npm:2.2.3"
+  checksum: 10c0/546c38b924c4a8dd79ec457928cfb99a5aab2945d11f15f4f06894bdc148ea37a1ae8b78cf17de9bb5354cbb896f6af4099073690b5b2089e1b196cec963d6ec
   languageName: node
   linkType: hard
 
-"@connectrpc/connect-node@npm:^2.0.0-alpha.1":
-  version: 2.0.0-alpha.1
-  resolution: "@connectrpc/connect-node@npm:2.0.0-alpha.1"
-  dependencies:
-    undici: "npm:^5.28.4"
+"@connectrpc/connect-node@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "@connectrpc/connect-node@npm:2.0.1"
   peerDependencies:
-    "@bufbuild/protobuf": ^2.0.0-beta.2
-    "@connectrpc/connect": 2.0.0-alpha.1
-  checksum: 10c0/e5f357f78ff49b4b77e23b0e9c6037d4e1d8697b5ad43a20e5b9b24c0cd42318c81269c56cb9c2d51d6a32da0f0f292027b261a257f06ed3f664cb9de151be9c
+    "@bufbuild/protobuf": ^2.2.0
+    "@connectrpc/connect": 2.0.1
+  checksum: 10c0/faec8d167201cf2864020a94f394e6498c6a51024f7216fc2457304bfc53a5ccadd38b65e850845bcabfa40f0ec96ab2b0e78b8da78ad610aabddcb3c9c5a60b
   languageName: node
   linkType: hard
 
-"@connectrpc/connect@npm:^2.0.0-alpha.1":
-  version: 2.0.0-alpha.1
-  resolution: "@connectrpc/connect@npm:2.0.0-alpha.1"
+"@connectrpc/connect@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "@connectrpc/connect@npm:2.0.1"
   peerDependencies:
-    "@bufbuild/protobuf": ^2.0.0-beta.2
-  checksum: 10c0/474e53c2e2ea41acdadce61f501ef279f4d9eabed69e38b2dc51fd3284719bca736e7e2e8841af456b47a1bcb4930cc3a45f87835ec2c34ecdeba1d616b15589
+    "@bufbuild/protobuf": ^2.2.0
+  checksum: 10c0/a5a43dd5131ad91bf43f2ab286c8789fe98e19508bf22590560df83a22b295260d4b53c60d01935f53dc98ed77509fdba87993ce4a9620cc2aa575a2579ed37e
   languageName: node
   linkType: hard
 
@@ -309,13 +307,6 @@ __metadata:
     ajv-formats: "npm:^2.1.1"
     fast-uri: "npm:^2.0.0"
   checksum: 10c0/f0be2ca1f75833492829c52c5f5ef0ec118bdd010614e002a6366952c27297c0f6a7dafb5917a0f9c4aaa84aa32a39e520c6d837fa251748717d58590cfc8177
-  languageName: node
-  linkType: hard
-
-"@fastify/busboy@npm:^2.0.0":
-  version: 2.1.1
-  resolution: "@fastify/busboy@npm:2.1.1"
-  checksum: 10c0/6f8027a8cba7f8f7b736718b013f5a38c0476eea67034c94a0d3c375e2b114366ad4419e6a6fa7ffc2ef9c6d3e0435d76dd584a7a1cbac23962fda7650b579e3
   languageName: node
   linkType: hard
 
@@ -1264,9 +1255,9 @@ __metadata:
   resolution: "grpc-node-playground@workspace:."
   dependencies:
     "@biomejs/biome": "npm:^1.8.3"
-    "@bufbuild/protobuf": "npm:^2.0.0"
-    "@connectrpc/connect": "npm:^2.0.0-alpha.1"
-    "@connectrpc/connect-node": "npm:^2.0.0-alpha.1"
+    "@bufbuild/protobuf": "npm:^2.2.3"
+    "@connectrpc/connect": "npm:^2.0.1"
+    "@connectrpc/connect-node": "npm:^2.0.1"
     "@fastify/cors": "npm:^9.0.1"
     "@grpc/grpc-js": "npm:^1.11.1"
     "@grpc/proto-loader": "npm:^0.7.13"
@@ -2305,15 +2296,6 @@ __metadata:
   version: 6.13.0
   resolution: "undici-types@npm:6.13.0"
   checksum: 10c0/2de55181f569c77a4f08063f8bf2722fcbb6ea312a26a9e927bd1f5ea5cf3a281c5ddf23155061db083e0a25838f54813543ff13b0ac34d230d5c1205ead66c1
-  languageName: node
-  linkType: hard
-
-"undici@npm:^5.28.4":
-  version: 5.28.4
-  resolution: "undici@npm:5.28.4"
-  dependencies:
-    "@fastify/busboy": "npm:^2.0.0"
-  checksum: 10c0/08d0f2596553aa0a54ca6e8e9c7f45aef7d042c60918564e3a142d449eda165a80196f6ef19ea2ef2e6446959e293095d8e40af1236f0d67223b06afac5ecad7
   languageName: node
   linkType: hard
 

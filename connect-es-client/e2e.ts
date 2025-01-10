@@ -1,4 +1,4 @@
-import { createPromiseClient } from '@connectrpc/connect';
+import { createClient } from '@connectrpc/connect';
 import { createGrpcTransport } from '@connectrpc/connect-node';
 import { EchoService } from '~/connect-es/__proto__/echo/v1/echo_pb.js';
 import { makeGrpcServer } from '~/connect-es/grpcServer.js';
@@ -9,11 +9,10 @@ async function main() {
   const grpcServer = makeGrpcServer();
   grpcServer.start(GRPC_SERVER_PORT);
 
-  const client = createPromiseClient(
+  const client = createClient(
     EchoService,
     createGrpcTransport({
       baseUrl: `http://localhost:${GRPC_SERVER_PORT}`,
-      httpVersion: '2',
     }),
   );
 

@@ -38,6 +38,6 @@ plugins:
       - importSuffix=.js
       - enumsAsLiterals=true
   # https://buf.build/bufbuild/es
-  - remote: buf.build/bufbuild/es:v2.0.0
+  - remote: buf.build/bufbuild/es:v2.2.3
     out: connect-es/__proto__
     opt: target=ts
