@@ -1,0 +1,16 @@
+version: v2
+inputs:
+  - directory: proto
+clean: true
+managed:
+  enabled: true
+  override:
+    - file_option: go_package_prefix
+      value: github.com/kanziw/grpc-node-playground/gen
+  disable:
+    - module: buf.build/googleapis/googleapis
+    - module: buf.build/grpc-ecosystem/grpc-gateway
+plugins:
+  # https://buf.build/grpc-ecosystem/openapiv2
+  - remote: buf.build/grpc-ecosystem/openapiv2:v2.16.2
+    out: openapi/v2

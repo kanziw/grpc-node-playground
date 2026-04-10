@@ -694,6 +694,55 @@ export interface Schema {
 }
 
 /**
+ * `EnumSchema` is subset of fields from the OpenAPI v2 specification's Schema object.
+ * Only fields that are applicable to Enums are included
+ * See: https://github.com/OAI/OpenAPI-Specification/blob/3.0.0/versions/2.0.md#schemaObject
+ *
+ * Example:
+ *
+ *  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_enum) = {
+ *    ...
+ *    title: "MyEnum";
+ *    description:"This is my nice enum";
+ *    example: "ZERO";
+ *    required: true;
+ *    ...
+ *  };
+ */
+export interface EnumSchema {
+  /** A short description of the schema. */
+  description: string;
+  default: string;
+  /** The title of the schema. */
+  title: string;
+  required: boolean;
+  read_only: boolean;
+  /** Additional external documentation for this schema. */
+  external_docs?: ExternalDocumentation | null;
+  example: string;
+  /**
+   * Ref is used to define an external reference to include in the message.
+   * This could be a fully qualified proto message reference, and that type must
+   * be imported into the protofile. If no message is identified, the Ref will
+   * be used verbatim in the output.
+   * For example:
+   *  `ref: ".google.protobuf.Timestamp"`.
+   */
+  ref: string;
+  /**
+   * Custom properties that start with "x-" such as "x-foo" used to describe
+   * extra functionality that is not covered by the standard OpenAPI Specification.
+   * See: https://swagger.io/docs/specification/2-0/swagger-extensions/
+   */
+  extensions: { [key: string]: any | null };
+}
+
+export interface EnumSchema_ExtensionsEntry {
+  key: string;
+  value?: any | null;
+}
+
+/**
  * `JSONSchema` represents properties from JSON Schema taken, and as used, in
  * the OpenAPI v2 spec.
  *
@@ -899,6 +948,11 @@ export interface JSONSchema_FieldConfiguration {
    * for overlapping paths.
    */
   path_param_name: string;
+  /**
+   * Declares this field to be deprecated. Allows for the generated OpenAPI
+   * parameter to be marked as deprecated without affecting the proto field.
+   */
+  deprecated: boolean;
 }
 
 export interface JSONSchema_ExtensionsEntry {
@@ -4165,6 +4219,361 @@ export const Schema = {
   },
 };
 
+function createBaseEnumSchema(): EnumSchema {
+  return {
+    description: "",
+    default: "",
+    title: "",
+    required: false,
+    read_only: false,
+    external_docs: null,
+    example: "",
+    ref: "",
+    extensions: {},
+  };
+}
+
+export const EnumSchema = {
+  encode(message: EnumSchema, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.description !== "") {
+      writer.uint32(10).string(message.description);
+    }
+    if (message.default !== "") {
+      writer.uint32(18).string(message.default);
+    }
+    if (message.title !== "") {
+      writer.uint32(26).string(message.title);
+    }
+    if (message.required !== false) {
+      writer.uint32(32).bool(message.required);
+    }
+    if (message.read_only !== false) {
+      writer.uint32(40).bool(message.read_only);
+    }
+    if (message.external_docs !== undefined && message.external_docs !== null) {
+      ExternalDocumentation.encode(message.external_docs, writer.uint32(50).fork()).ldelim();
+    }
+    if (message.example !== "") {
+      writer.uint32(58).string(message.example);
+    }
+    if (message.ref !== "") {
+      writer.uint32(66).string(message.ref);
+    }
+    Object.entries(message.extensions).forEach(([key, value]) => {
+      if (value !== undefined || value !== null) {
+        EnumSchema_ExtensionsEntry.encode({ key: key as any, value }, writer.uint32(74).fork()).ldelim();
+      }
+    });
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): EnumSchema {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseEnumSchema();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.description = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.default = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.title = reader.string();
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.required = reader.bool();
+          continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.read_only = reader.bool();
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.external_docs = ExternalDocumentation.decode(reader, reader.uint32());
+          continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.example = reader.string();
+          continue;
+        case 8:
+          if (tag !== 66) {
+            break;
+          }
+
+          message.ref = reader.string();
+          continue;
+        case 9:
+          if (tag !== 74) {
+            break;
+          }
+
+          const entry9 = EnumSchema_ExtensionsEntry.decode(reader, reader.uint32());
+          if (entry9.value !== undefined && entry9.value !== null) {
+            message.extensions[entry9.key] = entry9.value;
+          }
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  // encodeTransform encodes a source of message objects.
+  // Transform<EnumSchema, Uint8Array>
+  async *encodeTransform(
+    source: AsyncIterable<EnumSchema | EnumSchema[]> | Iterable<EnumSchema | EnumSchema[]>,
+  ): AsyncIterable<Uint8Array> {
+    for await (const pkt of source) {
+      if (globalThis.Array.isArray(pkt)) {
+        for (const p of (pkt as any)) {
+          yield* [EnumSchema.encode(p).finish()];
+        }
+      } else {
+        yield* [EnumSchema.encode(pkt as any).finish()];
+      }
+    }
+  },
+
+  // decodeTransform decodes a source of encoded messages.
+  // Transform<Uint8Array, EnumSchema>
+  async *decodeTransform(
+    source: AsyncIterable<Uint8Array | Uint8Array[]> | Iterable<Uint8Array | Uint8Array[]>,
+  ): AsyncIterable<EnumSchema> {
+    for await (const pkt of source) {
+      if (globalThis.Array.isArray(pkt)) {
+        for (const p of (pkt as any)) {
+          yield* [EnumSchema.decode(p)];
+        }
+      } else {
+        yield* [EnumSchema.decode(pkt as any)];
+      }
+    }
+  },
+
+  fromJSON(object: any): EnumSchema {
+    return {
+      description: isSet(object.description) ? globalThis.String(object.description) : "",
+      default: isSet(object.default) ? globalThis.String(object.default) : "",
+      title: isSet(object.title) ? globalThis.String(object.title) : "",
+      required: isSet(object.required) ? globalThis.Boolean(object.required) : false,
+      read_only: isSet(object.read_only) ? globalThis.Boolean(object.read_only) : false,
+      external_docs: isSet(object.external_docs) ? ExternalDocumentation.fromJSON(object.external_docs) : null,
+      example: isSet(object.example) ? globalThis.String(object.example) : "",
+      ref: isSet(object.ref) ? globalThis.String(object.ref) : "",
+      extensions: isObject(object.extensions)
+        ? Object.entries(object.extensions).reduce<{ [key: string]: any | null }>((acc, [key, value]) => {
+          acc[key] = value as any | null;
+          return acc;
+        }, {})
+        : {},
+    };
+  },
+
+  toJSON(message: EnumSchema): unknown {
+    const obj: any = {};
+    if (message.description !== "") {
+      obj.description = message.description;
+    }
+    if (message.default !== "") {
+      obj.default = message.default;
+    }
+    if (message.title !== "") {
+      obj.title = message.title;
+    }
+    if (message.required !== false) {
+      obj.required = message.required;
+    }
+    if (message.read_only !== false) {
+      obj.read_only = message.read_only;
+    }
+    if (message.external_docs !== undefined && message.external_docs !== null) {
+      obj.external_docs = ExternalDocumentation.toJSON(message.external_docs);
+    }
+    if (message.example !== "") {
+      obj.example = message.example;
+    }
+    if (message.ref !== "") {
+      obj.ref = message.ref;
+    }
+    if (message.extensions) {
+      const entries = Object.entries(message.extensions);
+      if (entries.length > 0) {
+        obj.extensions = {};
+        entries.forEach(([k, v]) => {
+          obj.extensions[k] = v;
+        });
+      }
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<EnumSchema>, I>>(base?: I): EnumSchema {
+    return EnumSchema.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<EnumSchema>, I>>(object: I): EnumSchema {
+    const message = createBaseEnumSchema();
+    message.description = object.description ?? "";
+    message.default = object.default ?? "";
+    message.title = object.title ?? "";
+    message.required = object.required ?? false;
+    message.read_only = object.read_only ?? false;
+    message.external_docs = (object.external_docs !== undefined && object.external_docs !== null)
+      ? ExternalDocumentation.fromPartial(object.external_docs)
+      : null;
+    message.example = object.example ?? "";
+    message.ref = object.ref ?? "";
+    message.extensions = Object.entries(object.extensions ?? {}).reduce<{ [key: string]: any | null }>(
+      (acc, [key, value]) => {
+        if (value !== undefined) {
+          acc[key] = value;
+        }
+        return acc;
+      },
+      {},
+    );
+    return message;
+  },
+};
+
+function createBaseEnumSchema_ExtensionsEntry(): EnumSchema_ExtensionsEntry {
+  return { key: "", value: null };
+}
+
+export const EnumSchema_ExtensionsEntry = {
+  encode(message: EnumSchema_ExtensionsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.key !== "") {
+      writer.uint32(10).string(message.key);
+    }
+    if (message.value !== undefined && message.value !== null) {
+      Value.encode(Value.wrap(message.value), writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): EnumSchema_ExtensionsEntry {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseEnumSchema_ExtensionsEntry();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.key = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.value = Value.unwrap(Value.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  // encodeTransform encodes a source of message objects.
+  // Transform<EnumSchema_ExtensionsEntry, Uint8Array>
+  async *encodeTransform(
+    source:
+      | AsyncIterable<EnumSchema_ExtensionsEntry | EnumSchema_ExtensionsEntry[]>
+      | Iterable<EnumSchema_ExtensionsEntry | EnumSchema_ExtensionsEntry[]>,
+  ): AsyncIterable<Uint8Array> {
+    for await (const pkt of source) {
+      if (globalThis.Array.isArray(pkt)) {
+        for (const p of (pkt as any)) {
+          yield* [EnumSchema_ExtensionsEntry.encode(p).finish()];
+        }
+      } else {
+        yield* [EnumSchema_ExtensionsEntry.encode(pkt as any).finish()];
+      }
+    }
+  },
+
+  // decodeTransform decodes a source of encoded messages.
+  // Transform<Uint8Array, EnumSchema_ExtensionsEntry>
+  async *decodeTransform(
+    source: AsyncIterable<Uint8Array | Uint8Array[]> | Iterable<Uint8Array | Uint8Array[]>,
+  ): AsyncIterable<EnumSchema_ExtensionsEntry> {
+    for await (const pkt of source) {
+      if (globalThis.Array.isArray(pkt)) {
+        for (const p of (pkt as any)) {
+          yield* [EnumSchema_ExtensionsEntry.decode(p)];
+        }
+      } else {
+        yield* [EnumSchema_ExtensionsEntry.decode(pkt as any)];
+      }
+    }
+  },
+
+  fromJSON(object: any): EnumSchema_ExtensionsEntry {
+    return {
+      key: isSet(object.key) ? globalThis.String(object.key) : "",
+      value: isSet(object?.value) ? object.value : null,
+    };
+  },
+
+  toJSON(message: EnumSchema_ExtensionsEntry): unknown {
+    const obj: any = {};
+    if (message.key !== "") {
+      obj.key = message.key;
+    }
+    if (message.value !== undefined && message.value !== null) {
+      obj.value = message.value;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<EnumSchema_ExtensionsEntry>, I>>(base?: I): EnumSchema_ExtensionsEntry {
+    return EnumSchema_ExtensionsEntry.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<EnumSchema_ExtensionsEntry>, I>>(object: I): EnumSchema_ExtensionsEntry {
+    const message = createBaseEnumSchema_ExtensionsEntry();
+    message.key = object.key ?? "";
+    message.value = object.value ?? null;
+    return message;
+  },
+};
+
 function createBaseJSONSchema(): JSONSchema {
   return {
     ref: "",
@@ -4719,13 +5128,16 @@ export const JSONSchema = {
 };
 
 function createBaseJSONSchema_FieldConfiguration(): JSONSchema_FieldConfiguration {
-  return { path_param_name: "" };
+  return { path_param_name: "", deprecated: false };
 }
 
 export const JSONSchema_FieldConfiguration = {
   encode(message: JSONSchema_FieldConfiguration, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.path_param_name !== "") {
       writer.uint32(378).string(message.path_param_name);
+    }
+    if (message.deprecated !== false) {
+      writer.uint32(392).bool(message.deprecated);
     }
     return writer;
   },
@@ -4743,6 +5155,13 @@ export const JSONSchema_FieldConfiguration = {
           }
 
           message.path_param_name = reader.string();
+          continue;
+        case 49:
+          if (tag !== 392) {
+            break;
+          }
+
+          message.deprecated = reader.bool();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -4788,13 +5207,19 @@ export const JSONSchema_FieldConfiguration = {
   },
 
   fromJSON(object: any): JSONSchema_FieldConfiguration {
-    return { path_param_name: isSet(object.path_param_name) ? globalThis.String(object.path_param_name) : "" };
+    return {
+      path_param_name: isSet(object.path_param_name) ? globalThis.String(object.path_param_name) : "",
+      deprecated: isSet(object.deprecated) ? globalThis.Boolean(object.deprecated) : false,
+    };
   },
 
   toJSON(message: JSONSchema_FieldConfiguration): unknown {
     const obj: any = {};
     if (message.path_param_name !== "") {
       obj.path_param_name = message.path_param_name;
+    }
+    if (message.deprecated !== false) {
+      obj.deprecated = message.deprecated;
     }
     return obj;
   },
@@ -4807,6 +5232,7 @@ export const JSONSchema_FieldConfiguration = {
   ): JSONSchema_FieldConfiguration {
     const message = createBaseJSONSchema_FieldConfiguration();
     message.path_param_name = object.path_param_name ?? "";
+    message.deprecated = object.deprecated ?? false;
     return message;
   },
 };

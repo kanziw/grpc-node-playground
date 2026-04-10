@@ -1,0 +1,204 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Echo",
+    "version": "0.0.1",
+    "contact": {
+      "name": "kanziw",
+      "url": "https://github.com/kanziw/grpc-node-playground",
+      "email": "kanziwoong@gmail.com"
+    }
+  },
+  "tags": [
+    {
+      "name": "EchoService"
+    }
+  ],
+  "schemes": [
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/echo": {
+      "get": {
+        "operationId": "EchoService_Echo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1EchoResponse"
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorMessage"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "message",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "EchoService"
+        ]
+      }
+    },
+    "/v1/echo/{message}": {
+      "get": {
+        "operationId": "EchoService_Echo2",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1EchoResponse"
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorMessage"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "message",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "EchoService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v1ChatResponse": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "responseTime": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "v1Code": {
+      "type": "string",
+      "enum": [
+        "CODE_UNSPECIFIED",
+        "CODE_FAKE_ERROR"
+      ],
+      "default": "CODE_UNSPECIFIED"
+    },
+    "v1EchoResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string"
+        },
+        "responseTime": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "v1EchoStreamResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string"
+        },
+        "sequenceNumber": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "responseTime": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "v1ErrorMessage": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "$ref": "#/definitions/v1Code"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "v1StreamEchoResponse": {
+      "type": "object",
+      "properties": {
+        "fullMessage": {
+          "type": "string"
+        },
+        "responseTime": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  }
+}

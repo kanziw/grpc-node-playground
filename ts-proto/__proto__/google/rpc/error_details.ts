@@ -5,6 +5,7 @@
 // source: google/rpc/error_details.proto
 
 /* eslint-disable */
+import Long from "long";
 import _m0 from "protobufjs/minimal.js";
 import { Duration } from "../protobuf/duration.js";
 
@@ -57,11 +58,12 @@ export interface ErrorInfo {
   /**
    * Additional structured details about this error.
    *
-   * Keys should match /[a-zA-Z0-9-_]/ and be limited to 64 characters in
+   * Keys must match a regular expression of `[a-z][a-zA-Z0-9-_]+` but should
+   * ideally be lowerCamelCase. Also, they must be limited to 64 characters in
    * length. When identifying the current value of an exceeded limit, the units
    * should be contained in the key, not the value.  For example, rather than
-   * {"instanceLimit": "100/request"}, should be returned as,
-   * {"instanceLimitPerRequest": "100"}, if the client exceeds the number of
+   * `{"instanceLimit": "100/request"}`, should be returned as,
+   * `{"instanceLimitPerRequest": "100"}`, if the client exceeds the number of
    * instances that can be created in a single (batch) request.
    */
   metadata: { [key: string]: string };
@@ -139,6 +141,82 @@ export interface QuotaFailure_Violation {
    * exceeded".
    */
   description: string;
+  /**
+   * The API Service from which the `QuotaFailure.Violation` orginates. In
+   * some cases, Quota issues originate from an API Service other than the one
+   * that was called. In other words, a dependency of the called API Service
+   * could be the cause of the `QuotaFailure`, and this field would have the
+   * dependency API service name.
+   *
+   * For example, if the called API is Kubernetes Engine API
+   * (container.googleapis.com), and a quota violation occurs in the
+   * Kubernetes Engine API itself, this field would be
+   * "container.googleapis.com". On the other hand, if the quota violation
+   * occurs when the Kubernetes Engine API creates VMs in the Compute Engine
+   * API (compute.googleapis.com), this field would be
+   * "compute.googleapis.com".
+   */
+  api_service: string;
+  /**
+   * The metric of the violated quota. A quota metric is a named counter to
+   * measure usage, such as API requests or CPUs. When an activity occurs in a
+   * service, such as Virtual Machine allocation, one or more quota metrics
+   * may be affected.
+   *
+   * For example, "compute.googleapis.com/cpus_per_vm_family",
+   * "storage.googleapis.com/internet_egress_bandwidth".
+   */
+  quota_metric: string;
+  /**
+   * The id of the violated quota. Also know as "limit name", this is the
+   * unique identifier of a quota in the context of an API service.
+   *
+   * For example, "CPUS-PER-VM-FAMILY-per-project-region".
+   */
+  quota_id: string;
+  /**
+   * The dimensions of the violated quota. Every non-global quota is enforced
+   * on a set of dimensions. While quota metric defines what to count, the
+   * dimensions specify for what aspects the counter should be increased.
+   *
+   * For example, the quota "CPUs per region per VM family" enforces a limit
+   * on the metric "compute.googleapis.com/cpus_per_vm_family" on dimensions
+   * "region" and "vm_family". And if the violation occurred in region
+   * "us-central1" and for VM family "n1", the quota_dimensions would be,
+   *
+   * {
+   *   "region": "us-central1",
+   *   "vm_family": "n1",
+   * }
+   *
+   * When a quota is enforced globally, the quota_dimensions would always be
+   * empty.
+   */
+  quota_dimensions: { [key: string]: string };
+  /**
+   * The enforced quota value at the time of the `QuotaFailure`.
+   *
+   * For example, if the enforced quota value at the time of the
+   * `QuotaFailure` on the number of CPUs is "10", then the value of this
+   * field would reflect this quantity.
+   */
+  quota_value: bigint;
+  /**
+   * The new quota value being rolled out at the time of the violation. At the
+   * completion of the rollout, this value will be enforced in place of
+   * quota_value. If no rollout is in progress at the time of the violation,
+   * this field is not set.
+   *
+   * For example, if at the time of the violation a rollout is in progress
+   * changing the number of CPUs quota from 10 to 20, 20 would be the value of
+   * this field.
+   */
+  future_quota_value?: bigint | null | undefined;
+}
+
+export interface QuotaFailure_Violation_QuotaDimensionsEntry {
+  key: string;
+  value: string;
 }
 
 /**
@@ -229,6 +307,20 @@ export interface BadRequest_FieldViolation {
   field: string;
   /** A description of why the request element is bad. */
   description: string;
+  /**
+   * The reason of the field-level error. This is a constant value that
+   * identifies the proximate cause of the field-level error. It should
+   * uniquely identify the type of the FieldViolation within the scope of the
+   * google.rpc.ErrorInfo.domain. This should be at most 63
+   * characters and match a regular expression of `[A-Z][A-Z0-9_]+[A-Z0-9]`,
+   * which represents UPPER_SNAKE_CASE.
+   */
+  reason: string;
+  /**
+   * Provides a localized error message for field-level errors that is safe to
+   * return to the API consumer.
+   */
+  localized_message?: LocalizedMessage | null;
 }
 
 /**
@@ -853,7 +945,16 @@ export const QuotaFailure = {
 };
 
 function createBaseQuotaFailure_Violation(): QuotaFailure_Violation {
-  return { subject: "", description: "" };
+  return {
+    subject: "",
+    description: "",
+    api_service: "",
+    quota_metric: "",
+    quota_id: "",
+    quota_dimensions: {},
+    quota_value: BigInt("0"),
+    future_quota_value: null,
+  };
 }
 
 export const QuotaFailure_Violation = {
@@ -863,6 +964,30 @@ export const QuotaFailure_Violation = {
     }
     if (message.description !== "") {
       writer.uint32(18).string(message.description);
+    }
+    if (message.api_service !== "") {
+      writer.uint32(26).string(message.api_service);
+    }
+    if (message.quota_metric !== "") {
+      writer.uint32(34).string(message.quota_metric);
+    }
+    if (message.quota_id !== "") {
+      writer.uint32(42).string(message.quota_id);
+    }
+    Object.entries(message.quota_dimensions).forEach(([key, value]) => {
+      QuotaFailure_Violation_QuotaDimensionsEntry.encode({ key: key as any, value }, writer.uint32(50).fork()).ldelim();
+    });
+    if (message.quota_value !== BigInt("0")) {
+      if (BigInt.asIntN(64, message.quota_value) !== message.quota_value) {
+        throw new globalThis.Error("value provided for field message.quota_value of type int64 too large");
+      }
+      writer.uint32(56).int64(message.quota_value.toString());
+    }
+    if (message.future_quota_value !== undefined && message.future_quota_value !== null) {
+      if (BigInt.asIntN(64, message.future_quota_value) !== message.future_quota_value) {
+        throw new globalThis.Error("value provided for field message.future_quota_value of type int64 too large");
+      }
+      writer.uint32(64).int64(message.future_quota_value.toString());
     }
     return writer;
   },
@@ -887,6 +1012,51 @@ export const QuotaFailure_Violation = {
           }
 
           message.description = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.api_service = reader.string();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.quota_metric = reader.string();
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.quota_id = reader.string();
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          const entry6 = QuotaFailure_Violation_QuotaDimensionsEntry.decode(reader, reader.uint32());
+          if (entry6.value !== undefined && entry6.value !== null) {
+            message.quota_dimensions[entry6.key] = entry6.value;
+          }
+          continue;
+        case 7:
+          if (tag !== 56) {
+            break;
+          }
+
+          message.quota_value = longToBigint(reader.int64() as Long);
+          continue;
+        case 8:
+          if (tag !== 64) {
+            break;
+          }
+
+          message.future_quota_value = longToBigint(reader.int64() as Long);
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -935,6 +1105,17 @@ export const QuotaFailure_Violation = {
     return {
       subject: isSet(object.subject) ? globalThis.String(object.subject) : "",
       description: isSet(object.description) ? globalThis.String(object.description) : "",
+      api_service: isSet(object.api_service) ? globalThis.String(object.api_service) : "",
+      quota_metric: isSet(object.quota_metric) ? globalThis.String(object.quota_metric) : "",
+      quota_id: isSet(object.quota_id) ? globalThis.String(object.quota_id) : "",
+      quota_dimensions: isObject(object.quota_dimensions)
+        ? Object.entries(object.quota_dimensions).reduce<{ [key: string]: string }>((acc, [key, value]) => {
+          acc[key] = String(value);
+          return acc;
+        }, {})
+        : {},
+      quota_value: isSet(object.quota_value) ? BigInt(object.quota_value) : BigInt("0"),
+      future_quota_value: isSet(object.future_quota_value) ? BigInt(object.future_quota_value) : null,
     };
   },
 
@@ -946,6 +1127,30 @@ export const QuotaFailure_Violation = {
     if (message.description !== "") {
       obj.description = message.description;
     }
+    if (message.api_service !== "") {
+      obj.api_service = message.api_service;
+    }
+    if (message.quota_metric !== "") {
+      obj.quota_metric = message.quota_metric;
+    }
+    if (message.quota_id !== "") {
+      obj.quota_id = message.quota_id;
+    }
+    if (message.quota_dimensions) {
+      const entries = Object.entries(message.quota_dimensions);
+      if (entries.length > 0) {
+        obj.quota_dimensions = {};
+        entries.forEach(([k, v]) => {
+          obj.quota_dimensions[k] = v;
+        });
+      }
+    }
+    if (message.quota_value !== BigInt("0")) {
+      obj.quota_value = message.quota_value.toString();
+    }
+    if (message.future_quota_value !== undefined && message.future_quota_value !== null) {
+      obj.future_quota_value = message.future_quota_value.toString();
+    }
     return obj;
   },
 
@@ -956,6 +1161,132 @@ export const QuotaFailure_Violation = {
     const message = createBaseQuotaFailure_Violation();
     message.subject = object.subject ?? "";
     message.description = object.description ?? "";
+    message.api_service = object.api_service ?? "";
+    message.quota_metric = object.quota_metric ?? "";
+    message.quota_id = object.quota_id ?? "";
+    message.quota_dimensions = Object.entries(object.quota_dimensions ?? {}).reduce<{ [key: string]: string }>(
+      (acc, [key, value]) => {
+        if (value !== undefined) {
+          acc[key] = globalThis.String(value);
+        }
+        return acc;
+      },
+      {},
+    );
+    message.quota_value = object.quota_value ?? BigInt("0");
+    message.future_quota_value = object.future_quota_value ?? undefined;
+    return message;
+  },
+};
+
+function createBaseQuotaFailure_Violation_QuotaDimensionsEntry(): QuotaFailure_Violation_QuotaDimensionsEntry {
+  return { key: "", value: "" };
+}
+
+export const QuotaFailure_Violation_QuotaDimensionsEntry = {
+  encode(message: QuotaFailure_Violation_QuotaDimensionsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.key !== "") {
+      writer.uint32(10).string(message.key);
+    }
+    if (message.value !== "") {
+      writer.uint32(18).string(message.value);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QuotaFailure_Violation_QuotaDimensionsEntry {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQuotaFailure_Violation_QuotaDimensionsEntry();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.key = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.value = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  // encodeTransform encodes a source of message objects.
+  // Transform<QuotaFailure_Violation_QuotaDimensionsEntry, Uint8Array>
+  async *encodeTransform(
+    source:
+      | AsyncIterable<QuotaFailure_Violation_QuotaDimensionsEntry | QuotaFailure_Violation_QuotaDimensionsEntry[]>
+      | Iterable<QuotaFailure_Violation_QuotaDimensionsEntry | QuotaFailure_Violation_QuotaDimensionsEntry[]>,
+  ): AsyncIterable<Uint8Array> {
+    for await (const pkt of source) {
+      if (globalThis.Array.isArray(pkt)) {
+        for (const p of (pkt as any)) {
+          yield* [QuotaFailure_Violation_QuotaDimensionsEntry.encode(p).finish()];
+        }
+      } else {
+        yield* [QuotaFailure_Violation_QuotaDimensionsEntry.encode(pkt as any).finish()];
+      }
+    }
+  },
+
+  // decodeTransform decodes a source of encoded messages.
+  // Transform<Uint8Array, QuotaFailure_Violation_QuotaDimensionsEntry>
+  async *decodeTransform(
+    source: AsyncIterable<Uint8Array | Uint8Array[]> | Iterable<Uint8Array | Uint8Array[]>,
+  ): AsyncIterable<QuotaFailure_Violation_QuotaDimensionsEntry> {
+    for await (const pkt of source) {
+      if (globalThis.Array.isArray(pkt)) {
+        for (const p of (pkt as any)) {
+          yield* [QuotaFailure_Violation_QuotaDimensionsEntry.decode(p)];
+        }
+      } else {
+        yield* [QuotaFailure_Violation_QuotaDimensionsEntry.decode(pkt as any)];
+      }
+    }
+  },
+
+  fromJSON(object: any): QuotaFailure_Violation_QuotaDimensionsEntry {
+    return {
+      key: isSet(object.key) ? globalThis.String(object.key) : "",
+      value: isSet(object.value) ? globalThis.String(object.value) : "",
+    };
+  },
+
+  toJSON(message: QuotaFailure_Violation_QuotaDimensionsEntry): unknown {
+    const obj: any = {};
+    if (message.key !== "") {
+      obj.key = message.key;
+    }
+    if (message.value !== "") {
+      obj.value = message.value;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<QuotaFailure_Violation_QuotaDimensionsEntry>, I>>(
+    base?: I,
+  ): QuotaFailure_Violation_QuotaDimensionsEntry {
+    return QuotaFailure_Violation_QuotaDimensionsEntry.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<QuotaFailure_Violation_QuotaDimensionsEntry>, I>>(
+    object: I,
+  ): QuotaFailure_Violation_QuotaDimensionsEntry {
+    const message = createBaseQuotaFailure_Violation_QuotaDimensionsEntry();
+    message.key = object.key ?? "";
+    message.value = object.value ?? "";
     return message;
   },
 };
@@ -1274,7 +1605,7 @@ export const BadRequest = {
 };
 
 function createBaseBadRequest_FieldViolation(): BadRequest_FieldViolation {
-  return { field: "", description: "" };
+  return { field: "", description: "", reason: "", localized_message: null };
 }
 
 export const BadRequest_FieldViolation = {
@@ -1284,6 +1615,12 @@ export const BadRequest_FieldViolation = {
     }
     if (message.description !== "") {
       writer.uint32(18).string(message.description);
+    }
+    if (message.reason !== "") {
+      writer.uint32(26).string(message.reason);
+    }
+    if (message.localized_message !== undefined && message.localized_message !== null) {
+      LocalizedMessage.encode(message.localized_message, writer.uint32(34).fork()).ldelim();
     }
     return writer;
   },
@@ -1308,6 +1645,20 @@ export const BadRequest_FieldViolation = {
           }
 
           message.description = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.reason = reader.string();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.localized_message = LocalizedMessage.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1356,6 +1707,8 @@ export const BadRequest_FieldViolation = {
     return {
       field: isSet(object.field) ? globalThis.String(object.field) : "",
       description: isSet(object.description) ? globalThis.String(object.description) : "",
+      reason: isSet(object.reason) ? globalThis.String(object.reason) : "",
+      localized_message: isSet(object.localized_message) ? LocalizedMessage.fromJSON(object.localized_message) : null,
     };
   },
 
@@ -1367,6 +1720,12 @@ export const BadRequest_FieldViolation = {
     if (message.description !== "") {
       obj.description = message.description;
     }
+    if (message.reason !== "") {
+      obj.reason = message.reason;
+    }
+    if (message.localized_message !== undefined && message.localized_message !== null) {
+      obj.localized_message = LocalizedMessage.toJSON(message.localized_message);
+    }
     return obj;
   },
 
@@ -1377,6 +1736,10 @@ export const BadRequest_FieldViolation = {
     const message = createBaseBadRequest_FieldViolation();
     message.field = object.field ?? "";
     message.description = object.description ?? "";
+    message.reason = object.reason ?? "";
+    message.localized_message = (object.localized_message !== undefined && object.localized_message !== null)
+      ? LocalizedMessage.fromPartial(object.localized_message)
+      : null;
     return message;
   },
 };
@@ -1945,6 +2308,15 @@ export type DeepPartial<T> = T extends Builtin ? T
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
+
+function longToBigint(long: Long) {
+  return BigInt(long.toString());
+}
+
+if (_m0.util.Long !== Long) {
+  _m0.util.Long = Long as any;
+  _m0.configure();
+}
 
 function isObject(value: any): boolean {
   return typeof value === "object" && value !== null;

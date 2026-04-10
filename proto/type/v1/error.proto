@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package type.v1;
+
+enum Code {
+    CODE_UNSPECIFIED = 0;
+    CODE_FAKE_ERROR = 2;
+}
+
+message ErrorMessage {
+    Code code = 1 [json_name="code"];
+    string message = 2 [json_name="message"];
+}

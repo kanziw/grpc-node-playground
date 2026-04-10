@@ -22,6 +22,15 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
   schemes: HTTPS
   consumes: "application/json"
   produces: "application/json"
+  responses: {
+    key: "500"
+    value: {
+      description: "Server error"
+      schema: {
+        json_schema: {ref: ".type.v1.ErrorMessage"}
+      }
+    }
+  }
 };
 
 service EchoService {

@@ -52,6 +52,7 @@ tasks:
     desc: Generates the code
     cmds:
       - task: generate:proto
+      - task: generate:openapi
 
   run:
     desc: Runs the application
@@ -119,6 +120,7 @@ tasks:
     cmds:
       - buf export --output .proto-deps
     sources:
+      - proto/**/*.proto
       - buf.yaml
       - buf.lock
 
@@ -130,5 +132,15 @@ tasks:
       - proto/**/*.proto
       - buf.gen.yaml
       - buf.yaml
-      - connect-es/__proto__/**/*
-      - ts-proto/__proto__/**/*
+
+  generate:openapi:
+    desc: Generates OpenAPI v2 from proto and converts to v3
+    cmds:
+      - buf generate --template buf.gen.openapiv2.yaml
+      - rm -rf openapi/v3
+      - find openapi/v2 -name '*.swagger.json' -exec sh -c 'outdir="openapi/v3/$(dirname "${1#openapi/v2/}")" && mkdir -p "$outdir" && yarn swagger2openapi "$1" -o "$outdir/$(basename "$1" .swagger.json).openapi.json"' _ {} \;
+    sources:
+      - proto/**/*.proto
+      - buf.gen.openapiv2.yaml
+      - buf.yaml
+ 
