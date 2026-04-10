@@ -1,7 +1,7 @@
 import type { IncomingHttpHeaders } from 'node:http';
 import { type DescMessage, type DescService, type JsonValue, type MessageInitShape, type MessageShape, create, fromBinary, fromJson, getOption, toJson } from '@bufbuild/protobuf';
 import type { GenFile } from '@bufbuild/protobuf/codegenv1';
-import { createPromiseClient } from '@connectrpc/connect';
+import { createClient } from '@connectrpc/connect';
 import { createGrpcTransport } from '@connectrpc/connect-node';
 import { StatusCodes } from 'http-status-codes';
 import { http } from '~/connect-es/__proto__/google/api/annotations_pb.js';
@@ -25,7 +25,7 @@ export type CoreOptions = {
 
 export const grpcGatewayCore = ({ service, serviceDescriptor, grpcServerPort, registerRoutes }: CoreOptions) => {
   const { implement, messages } = parseSpec<typeof service>(serviceDescriptor);
-  const client = createPromiseClient(
+  const client = createClient(
     service,
     createGrpcTransport({
       baseUrl: `http://localhost:${grpcServerPort}`,

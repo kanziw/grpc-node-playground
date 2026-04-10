@@ -3,8 +3,9 @@ syntax = "proto3";
 package echo.v1;
 
 import "google/api/annotations.proto";
-import "google/rpc/error_details.proto"; // to generate error details stub
 import "google/protobuf/timestamp.proto";
+// buf:lint:ignore IMPORT_USED
+import "google/rpc/error_details.proto"; // to generate error details stub
 import "protoc-gen-openapiv2/options/annotations.proto";
 
 option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
@@ -27,11 +28,9 @@ service EchoService {
   rpc Echo(EchoRequest) returns (EchoResponse) {
     option (google.api.http) = {
       get: "/echo"
-      additional_bindings {
-        get: "/v1/echo/{message}"
-      }
+      additional_bindings: {get: "/v1/echo/{message}"}
     };
-  };
+  }
   rpc EchoStream(EchoStreamRequest) returns (stream EchoStreamResponse);
   rpc StreamEcho(stream StreamEchoRequest) returns (StreamEchoResponse);
   rpc Chat(stream ChatRequest) returns (stream ChatResponse);

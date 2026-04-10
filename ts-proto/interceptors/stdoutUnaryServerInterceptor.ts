@@ -68,7 +68,6 @@ export const stdoutUnaryServerInterceptor = ({ privateMetadataKeys = [] }: Optio
       }
       throw e;
     } finally {
-
       const grpc = {
         code,
         method: name,

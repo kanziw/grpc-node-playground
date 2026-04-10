@@ -18,7 +18,6 @@ tasks:
     desc: Installs prerequisites
     cmds:
       - brew bundle
-      - if [ ! -d ~/.config/pb/vendor ]; then pb vendor install; fi
     sources:
       - Brewfile
     preconditions:
@@ -29,15 +28,11 @@ tasks:
     desc: Installs tools
     run: once
     cmds:
-      - cmd: asdf plugin-add nodejs
-      - cmd: asdf plugin-add buf
-      - asdf install
-      - asdf current
-      # if yarn does not working
-      # - asdf reshim
+      - mise install
+      - mise current
       - corepack enable
     sources:
-      - .tool-versions
+      - mise.toml
 
   install:deps:
     desc: Installs dependencies
@@ -71,13 +66,15 @@ tasks:
 
   test:e2e:grpcurl:
     desc: Runs the e2e tests using grpcurl
+    deps:
+      - export:proto-deps
     cmds:
       - |
-        grpcurl -proto proto/echo/v1/echo.proto -plaintext -d @ localhost:$CONNECT_ES_GRPC_SERVER_PORT echo.v1.EchoService/Echo <<EOM
+        grpcurl -import-path .proto-deps -proto echo/v1/echo.proto -plaintext -d @ localhost:$CONNECT_ES_GRPC_SERVER_PORT echo.v1.EchoService/Echo <<EOM
         { "message": "Hi, connect-es!" }
         EOM
       - |
-        grpcurl -proto proto/echo/v1/echo.proto -plaintext -d @ localhost:$TS_PROTO_GRPC_SERVER_PORT echo.v1.EchoService/Echo <<EOM
+        grpcurl -import-path .proto-deps -proto echo/v1/echo.proto -plaintext -d @ localhost:$TS_PROTO_GRPC_SERVER_PORT echo.v1.EchoService/Echo <<EOM
         { "message": "Hi, ts-proto!" }
         EOM
 
@@ -116,6 +113,14 @@ tasks:
     sources:
       - proto/**/*.proto
       - buf.yaml
+
+  export:proto-deps:
+    desc: Exports proto dependencies for grpcurl
+    cmds:
+      - buf export --output .proto-deps
+    sources:
+      - buf.yaml
+      - buf.lock
 
   generate:proto:
     desc: Generates the proto files
